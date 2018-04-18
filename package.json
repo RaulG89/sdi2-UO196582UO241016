@@ -1,0 +1,9 @@
+{
+  "name": "sdi2-UO196582UO241016",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "swig": "^1.4.2"
+  }
+}
