@@ -9,8 +9,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 
-//Ruters/controllers
-require("./routes/rusuarios.js")(app, swig);
+//Routers/controllers
+require("./routes/rusers.js")(app, swig);
+require("./routes/rrequests.js")(app, swig);
 
 //Server launcher
 app.set('port', 8081);
