@@ -4,17 +4,36 @@
     <meta charset="utf-8"/>
     <meta name="author" content="Raúl Gómez Pérez and Marcos Ruíz Villamea"/>
     <title>{% block title %} sdi2-UO196582UO241016 {% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     {% block scripts %} {% endblock %}
 </head>
-</head>
 <body>
 {% block nav %} {% endblock %}
 <main class="container">
+    <script>
+        var mensaje = getUrlParameter('mensaje');
+        var tipoMensaje = getUrlParameter('tipoMensaje');
+        if (mensaje != "") {
+            if (tipoMensaje == "") {
+                tipoMensaje = 'alert-info';
+            }
+            $(".container").append(
+                "<div class='alert " + tipoMensaje + "'>" + mensaje
+                + " </div>");
+        }
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1]
+                .replace(/\+/g, ' '));
+        };
+    </script>
     {% block main %} {% endblock %}
     {% block pagination %} {% endblock %}
 </main>

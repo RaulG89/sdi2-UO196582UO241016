@@ -1,6 +1,13 @@
 //Modules
 var express = require('express');
 var app = express();
+
+var expressSession = require('express-session');
+app.use(expressSession({
+    secret: 'abcdefg',
+    resave: true,
+    saveUninitialized: true
+}));
 var crypto = require('crypto');
 var mongo = require('mongodb');
 var swig = require('swig');
