@@ -52,7 +52,7 @@ module.exports = function(app , swig, gestorBD) {
     });
 
     app.get("/user/list", function(req,res){
-        res.send("Logearse");
+        res.send("Usuarios");
     });
 
     app.get("/friends", function(req,res){
