@@ -60,11 +60,11 @@ module.exports = function(app , swig, gestorBD) {
                 }, {
                     $or: [{
                         "email": {
-                            $regex: "." + req.query.busqueda + "."
+                            $regex: ".*" + req.query.busqueda + ".*"
                         }
                     }, {
                         "nombre": {
-                            $regex: "." + req.query.busqueda + "."
+                            $regex: ".*" + req.query.busqueda + ".*"
                         }
                     }]
                 }]
@@ -145,6 +145,25 @@ module.exports = function(app , swig, gestorBD) {
 
 
     app.get("/friends", function(req,res){
+        let pg = parseInt(req.query.pg);
+        if (req.query.pg == null) {
+            pg = 1;
+        }
+        var criterion = {
+            email : req.session.usuario
+        };
+        gestorBD.obtenerUsuarios(criterion, function(user){
+            if (user == null){
+                res.send("Error al listar amigos.");
+            } else {
+                var friendCriterion = {
+                    user : gestorBD.mongo.ObjectID(user[0]._id)
+                };
+                gestorBD.getFriends(friendCriterion, function(friendship){
+                    //FALTA TERMINAR ESTO
+                });
+            }
+        })
         res.send("Amigos");
     });
 

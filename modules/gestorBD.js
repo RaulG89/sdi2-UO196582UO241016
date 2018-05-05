@@ -93,7 +93,7 @@ module.exports = {
             }
         });
     },
-    obtenerAmistades : function(criterio, funcionCallback) {
+    getFriends : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);

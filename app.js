@@ -30,6 +30,12 @@ app.set('crypto',crypto);
 require("./routes/rusers.js")(app, swig, gestorBD);
 require("./routes/rrequests.js")(app, swig, gestorBD);
 
+
+app.get('/', function (req, res) {
+    var respuesta = swig.renderFile('views/index.html', {});
+    res.send(respuesta);
+})
+
 //Server launcher
 app.set('port', 8081);
 app.listen(app.get('port'), function() {
