@@ -107,9 +107,9 @@ module.exports = function(app , swig, gestorBD) {
             }else {
                 var request = {
                     requested: gestorBD.mongo.ObjectID(req.params.id),
-                    requesting: usuarios[0]._id
+                    requesting: gestorBD.mongo.ObjectID(usuarios[0]._id)
                 }
-                gestorBD.getRequests(request, function(requests) {
+                gestorBD.obtenerPeticiones(request, function(requests) {
                     if(requests.length != 0){
                         res.redirect("/user/list"
                             + "?mensaje=Error al enviar petición, ya existe una petición enviada."
@@ -119,7 +119,7 @@ module.exports = function(app , swig, gestorBD) {
                             requested: gestorBD.mongo.ObjectID(req.params.id),
                             requesting: usuarios[0]._id
                         }
-                        gestorBD.getFriendships(friendship, function(friendships){
+                        gestorBD.obtenerAmistades(friendship, function(friendships){
                             if(friendships.length != 0){
                                 res.redirect("/user/list"
                                     + "?mensaje=Error al enviar petición, ya existe una amistad con este usuario"
@@ -142,6 +142,7 @@ module.exports = function(app , swig, gestorBD) {
             }
         })
     });
+
 
     app.get("/friends", function(req,res){
         res.send("Amigos");

@@ -76,7 +76,7 @@ module.exports = {
             }
         });
     },
-    getRequests : function(criterio, funcionCallback) {
+    obtenerPeticiones : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
@@ -93,7 +93,7 @@ module.exports = {
             }
         });
     },
-    getFriendships : function(criterio, funcionCallback) {
+    obtenerAmistades : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
