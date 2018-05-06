@@ -24,32 +24,32 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
 
-            {% if usuarioSesion != null %}
+            {% if usuario != null %}
             <ul class="nav navbar-nav">
-                <li class="nav-item" id="mListaUsuarios" class="active"><a href="/user/list">Lista
-                    Usuarios</a></li>
+                <li class="nav-item" class="active"><a href="/">Inicio</a></li>
             </ul>
             <ul class="nav navbar-nav">
-                <li class="nav-item" id="mListaPeticiones" class="active"><a
-                        href="/requests">Lista Peticiones Amistad</a></li>
+                <li class="nav-item" class="active"><a href="/user/list">Usuarios</a></li>
             </ul>
             <ul class="nav navbar-nav">
-                <li class="nav-item" id="mListaAmistades" class="active"><a
-                        href="/friends">Lista Amigos</a></li>
+                <li class="nav-item" class="active"><a href="/requests">Peticiones</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="nav-item" class="active"><a href="/friends">Amigos</a></li>
             </ul>
             {% endif %}
 
             <ul class="nav navbar-nav navbar-right">
-                {% if usuarioSesion == null %}
+                {% if usuario == null %}
                 <li><a id="botonSignup" href="/signup"><span
-                        class="glyphicon glyphicon-user"></span> Registrate</a></li>
+                        class="glyphicon glyphicon-user"></span>Regístrate</a></li>
                 <li><a id="botonLogin" href="/signin"><span
-                        class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
+                        class="glyphicon glyphicon-log-in"></span>Identifícate</a></li>
                 {% endif %}
 
-                {% if usuarioSesion != null %}
+                {% if usuario != null %}
                 <li><a id="botonLogout" href="/logout"><span
-                        class="glyphicon glyphicon-log-out"></span> Desconectarse</a></li>
+                        class="glyphicon glyphicon-log-out"></span>Desconectar</a></li>
                 {% endif %}
             </ul>
         </div>

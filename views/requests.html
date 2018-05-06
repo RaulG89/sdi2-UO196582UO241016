@@ -13,7 +13,7 @@
         {% for usuario in usuarios %}
         <tr>
             <td>{{ usuario.email }}</td>
-            <td><a type="button" href="/acceptrequest/{{ usuario._id.toString() }}">Accept</a></td>
+            <td><a type="button" href="/requests/accept/{{ usuario._id.toString() }}">Accept</a></td>
         </tr>
         {% endfor %}
         </tbody>

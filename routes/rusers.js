@@ -89,6 +89,7 @@ module.exports = function (app, swig, gestorBD) {
                 }
 
                 var respuesta = swig.renderFile('views/users.html', {
+                    usuario: req.session.usuario,
                     usuarios: usuarios,
                     pgActual: pg,
                     pgUltima: pgUltima
@@ -157,19 +158,19 @@ module.exports = function (app, swig, gestorBD) {
         var criterion = {
             email: req.session.usuario
         };
-        gestorBD.obtenerUsuarios(criterion, pg, function (users) {
+        gestorBD.obtenerUsuarios(criterion, function (users) {
             if (users != null) {
                 var friendCriterion = {
                     user: gestorBD.mongo.ObjectID(users[0]._id)
                 };
 
-                gestorBD.getFriends(friendCriterion, function (friendship) {
+                gestorBD.getFriends(friendCriterion, function (friendships) {
                     var localUser;
                     var localUserId = [];
 
-                    for (f in friendship) {
+                    for (friendship in friendships) {
                         localUserId.push(
-                            gestorBD.mongo.ObjectID(friendship[f].localUser)
+                            gestorBD.mongo.ObjectID(friendships[friendship].localUser)
                         )
                     }
 
@@ -193,11 +194,11 @@ module.exports = function (app, swig, gestorBD) {
                         }
 
                         var response = swig.renderFile(
-                            'views/users.html', {
+                            'views/friends.html', {
+                                usuario: req.session.usuario,
                                 users: friends,
                                 currentPg: pg,
                                 lastPg: lastPg,
-                                userSession: req.session.user
                             });
 
                         res.send(response);
@@ -209,5 +210,10 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
+    app.get("/logout", function (req, res){
+        var respuesta = swig.renderFile('views/index.html', {
+            usuario: null
+        });
+        res.send(respuesta);
+    });
 };
-

@@ -30,9 +30,24 @@ app.set('crypto',crypto);
 require("./routes/rusers.js")(app, swig, gestorBD);
 require("./routes/rrequests.js")(app, swig, gestorBD);
 
+// routerUserSession
+var routerUserSession = express.Router();
+routerUserSession.use(function(req, res, next) {
+    console.log("routerUsuarioSession");
+    if ( req.session.usuario ) {
+        // dejamos correr la petición
+        next();
+    } else {
+        console.log("va a : "+req.session.destino)
+        res.redirect("/signin");
+    }
+});
+
 
 app.get('/', function (req, res) {
-    var respuesta = swig.renderFile('views/index.html', {});
+    var respuesta = swig.renderFile('views/index.html', {
+        usuario: req.session.usuario
+    });
     res.send(respuesta);
 })
 

@@ -29,7 +29,7 @@ module.exports = function (app, swig, gestorBD) {
                             usuarios: requestingusers,
                             pgActual: pg,
                             pgUltima: pgUltima,
-                            loggedInUser: req.session.usuario
+                            usuario: req.session.usuario
                         });
                         res.send(respuesta);
                     })
@@ -80,8 +80,8 @@ module.exports = function (app, swig, gestorBD) {
         });
     }) */
 
-    app.get("/requests/accept", function (req, res) {
-        res.send("AceptarPetición")
+    app.get("/requests/accept/:id", function (req, res) {
+        res.send("AceptarPetición de: " + req.params.id);
     })
 
 }
