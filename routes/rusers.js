@@ -145,26 +145,63 @@ module.exports = function(app , swig, gestorBD) {
 
 
     app.get("/friends", function(req,res){
-        let pg = parseInt(req.query.pg);
+        var pg = parseInt(req.query.pg);
         if (req.query.pg == null) {
             pg = 1;
         }
         var criterion = {
             email : req.session.usuario
         };
-        gestorBD.obtenerUsuarios(criterion, function(user){
-            if (user == null){
+        gestorBD.obtenerUsuarios(criterion, pg, function(users){
+            if (users == null){
                 res.send("Error al listar amigos.");
             } else {
                 var friendCriterion = {
-                    user : gestorBD.mongo.ObjectID(user[0]._id)
+                    user : gestorBD.mongo.ObjectID(users[0]._id)
                 };
+
                 gestorBD.getFriends(friendCriterion, function(friendship){
-                    //FALTA TERMINAR ESTO
+                    var localUser;
+                    var localUserId = [];
+
+                    for(x in friendship){
+                        localUserId.push(
+                            gestorBD.mongo.ObjectID(friendship[x].localUser)
+                        )
+                    }
+
+                    localUser = {
+                        _id : {
+                            $in : localUserId
+                        }
+                    };
+
+                    var pg = parseInt(req.query.pg);
+                    if (req.query.pg == null) {
+                        pg = 1;
+                    }
+
+                    gestorBD.obtenerUsuariosPg(localUser, pg, function(
+                       friends, total) {
+                        var lastPg = total / 5;
+
+                        if (total % 5 > 0) {
+                           lastPg = lastPg + 1;
+                        }
+
+                        var response = swig.renderFile(
+                            'views/users.html', {
+                                users : friends,
+                                currentPg : pg,
+                                lastPg : lastPg,
+                                userSession: req.session.user
+                            });
+
+                        res.send(response);
+                    });
                 });
             }
-        })
-        res.send("Amigos");
+        });
     });
 
 };
