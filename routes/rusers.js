@@ -161,20 +161,27 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerUsuarios(criterion, function (users) {
             if (users != null) {
                 var friendCriterion = {
-                    user: gestorBD.mongo.ObjectID(users[0]._id)
+                    $or: [
+                        {
+                            "user": gestorBD.mongo.ObjectID(users[0]._id)
+                        },
+                        {
+                            "friend": gestorBD.mongo.ObjectID(users[0]._id)
+                        }
+                    ]
                 };
 
                 gestorBD.getFriends(friendCriterion, function (friendships) {
-                    var localUser;
-                    var localUserId = [];
+
+                    var usersId = [];
 
                     for (friendship in friendships) {
-                        localUserId.push(
-                            gestorBD.mongo.ObjectID(friendships[friendship].localUser)
+                        usersId.push(
+                            gestorBD.mongo.ObjectID(friendships[friendship].user)
                         )
                     }
 
-                    localUser = {
+                    var localUser = {
                         _id: {
                             $in: localUserId
                         }

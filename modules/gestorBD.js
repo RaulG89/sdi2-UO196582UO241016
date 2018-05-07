@@ -114,13 +114,31 @@ module.exports = {
         });
     },
 
-    getFriends : function(criterio, funcionCallback) {
+    addFriendship : function(friendship, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('friendships');
-                collection.find(criterio).toArray(function(err, friendships) {
+                collection.insert(friendship, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
+    getFriends : function(criterion, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('friendships');
+                collection.find(criterion).toArray(function(err, friendships) {
                     if (err) {
                         funcionCallback(null);
                     } else {

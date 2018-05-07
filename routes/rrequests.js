@@ -81,8 +81,30 @@ module.exports = function (app, swig, gestorBD) {
     }) */
 
     app.get("/requests/accept/:id", function (req, res) {
-        res.send("AceptarPetición de: " + req.params.id);
-    })
+        var criterion = {email: req.session.usuario};
+        gestorBD.obtenerUsuarios(criterion, function (usuarios) {
+            if (usuarios == null || usuarios.length == 0) {
+                res.redirect("/user/list"
+                    + "?mensaje=Error al aceptar petición"
+                    + "&tipoMensaje=alert-danger ");
+            } else {
+                var friendship = {
+                    user: gestorBD.mongo.ObjectID(req.params.id),
+                    friend: gestorBD.mongo.ObjectID(usuarios[0]._id)
+                }
+                gestorBD.addFriendship(friendship, function (idFriendship) {
+                    if (idFriendship == null) {
+                        res.redirect("/user/list"
+                            + "?mensaje=Error al aceptar petición"
+                            + "&tipoMensaje=alert-danger ");
+                    } else {
+                        res.redirect("/user/list"
+                            + "?mensaje=Amistad aceptada correctamente."
+                            + "&tipoMensaje=alert-success ");
+                    }
+                });
+            }
+        });
+    });
 
-}
-;
+};
