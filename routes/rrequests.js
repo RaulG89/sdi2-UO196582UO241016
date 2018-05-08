@@ -63,9 +63,22 @@ module.exports = function (app, swig, gestorBD) {
                             + "?mensaje=Error al aceptar petición"
                             + "&tipoMensaje=alert-danger ");
                     } else {
-                        res.redirect("/user/list"
-                            + "?mensaje=Amistad aceptada correctamente."
-                            + "&tipoMensaje=alert-success ");
+                        var requestAB = {
+                            requested: gestorBD.mongo.ObjectID(req.params.id),
+                            requesting: gestorBD.mongo.ObjectID(usuarios[0]._id)
+                        };
+                        var requestBA = {
+                            requested: gestorBD.mongo.ObjectID(usuarios[0]._id),
+                            requesting: gestorBD.mongo.ObjectID(req.params.id)
+                        };
+                        gestorBD.deleteFriendRequest(requestAB, function(){
+                            gestorBD.deleteFriendRequest(requestBA, function(){
+                                res.redirect("/user/list"
+                                    + "?mensaje=Amistad aceptada correctamente."
+                                    + "&tipoMensaje=alert-success ");
+                            })
+                        })
+
                     }
                 });
             }

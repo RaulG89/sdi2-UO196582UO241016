@@ -1,8 +1,10 @@
 module.exports = function (app, swig, gestorBD) {
+
     app.get("/signup", function (req, res) {
         var respuesta = swig.renderFile('views/signup.html', {});
         res.send(respuesta);
     });
+
     app.post('/usuario', function (req, res) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
@@ -16,13 +18,13 @@ module.exports = function (app, swig, gestorBD) {
             if (usuarios == null || usuarios.length == 0) {
                 gestorBD.insertarUsuario(usuario, function (id) {
                     if (id == null) {
-                        res.redirect("/signup?mensaje=Error al registrar usuario")
+                        res.redirect("/signup?mensaje=Error al registrar usuario");
                     } else {
                         res.redirect("/signin?mensaje=Nuevo usuario registrado");
                     }
                 });
             } else {
-                res.redirect("/signup?mensaje=Ya existe un usuario con este email.")
+                res.redirect("/signup?mensaje=Ya existe un usuario con este email.");
             }
         });
 
@@ -32,6 +34,7 @@ module.exports = function (app, swig, gestorBD) {
         var respuesta = swig.renderFile('views/signin.html', {});
         res.send(respuesta);
     });
+
     app.post("/signin", function (req, res) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
@@ -93,7 +96,8 @@ module.exports = function (app, swig, gestorBD) {
                     usuario: req.session.usuario,
                     usuarios: usuarios,
                     pgActual: pg,
-                    pgUltima: pgUltima
+                    pgUltima: pgUltima,
+                    busqueda: req.query.busqueda
                 });
                 res.send(respuesta);
             }
@@ -152,24 +156,14 @@ module.exports = function (app, swig, gestorBD) {
     *
     */
     app.get("/friends", function (req, res) {
-        var pg = parseInt(req.query.pg);
-        if (req.query.pg == null) {
-            pg = 1;
-        }
+
         var criterion = {
             email: req.session.usuario
         };
         gestorBD.obtenerUsuarios(criterion, function (users) {
             if (users != null) {
                 var friendCriterion = {
-                    $or: [
-                        {
-                            "user": gestorBD.mongo.ObjectID(users[0]._id)
-                        },
-                        {
-                            "friend": gestorBD.mongo.ObjectID(users[0]._id)
-                        }
-                    ]
+                    user: gestorBD.mongo.ObjectID(users[0]._id)
                 };
 
                 gestorBD.getFriends(friendCriterion, function (friendships) {
@@ -178,13 +172,13 @@ module.exports = function (app, swig, gestorBD) {
 
                     for (friendship in friendships) {
                         usersId.push(
-                            gestorBD.mongo.ObjectID(friendships[friendship].user)
+                            gestorBD.mongo.ObjectID(friendships[friendship].friend)
                         )
                     }
 
-                    var localUser = {
+                    var idFriends = {
                         _id: {
-                            $in: localUserId
+                            $in: usersId
                         }
                     };
 
@@ -193,7 +187,7 @@ module.exports = function (app, swig, gestorBD) {
                         pg = 1;
                     }
 
-                    gestorBD.obtenerUsuariosPg(localUser, pg, function (
+                    gestorBD.obtenerUsuariosPg(idFriends, pg, function (
                         friends, total) {
                         var lastPg = total / 5;
 
@@ -204,7 +198,7 @@ module.exports = function (app, swig, gestorBD) {
                         var response = swig.renderFile(
                             'views/friends.html', {
                                 usuario: req.session.usuario,
-                                users: friends,
+                                friends: friends,
                                 currentPg: pg,
                                 lastPg: lastPg,
                             });
@@ -218,7 +212,7 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
-    app.get("/logout", function (req, res){
+    app.get("/logout", function (req, res) {
         var respuesta = swig.renderFile('views/index.html', {
             usuario: null
         });

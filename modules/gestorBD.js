@@ -11,7 +11,7 @@ module.exports = {
                 funcionCallback(null);
             } else {
                 var collection = db.collection('usuarios');
-                collection.count(function(err, count) {
+                collection.count(criterio, function(err, count) {
                     collection.find(criterio).skip((pg - 1) * 5).limit(5)
                         .toArray(function(err, usuarios) {
                             if (err) {
@@ -78,6 +78,25 @@ module.exports = {
             }
         });
     },
+
+    deleteFriendRequest : function(request, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('requests');
+                collection.remove(request, function(err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
     obtenerPeticiones : function(criterio, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {

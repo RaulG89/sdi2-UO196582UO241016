@@ -32,10 +32,10 @@
         </tr>
         </thead>
         <tbody>
-        {% for usuario in usuarios %}
+        {% for friend in friends %}
         <tr>
-            <td>{{ usuario.nombre }}</td>
-            <td>{{ usuario.email }}</td>
+            <td>{{ friend.nombre }}</td>
+            <td>{{ friend.email }}</td>
         </tr>
         {% endfor %}
         </tbody>
@@ -51,25 +51,24 @@
         </li>
 
         <!-- Anterior (si la hay ) -->
-        {% if pgActual-1 >= 1 %}
+        {% if curentPg-1 >= 1 %}
         <li class="page-item"><a class="page-link"
-                                 href="/friends?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li>
-        {% endif
-        %}
+                                 href="/friends?pg={{ currentPg -1 }}">{{ currentPg -1 }}</a></li>
+        {% endif %}
 
         <!-- Actual -->
         <li class="page-item active"><a class="page-link"
-                                        href="/friends?pg={{ pgActual }}">{{ pgActual }}</a></li>
+                                        href="/friends?pg={{ currentPg }}">{{ currentPg }}</a></li>
 
         <!-- Siguiente (si la hay) -->
-        {% if pgActual+1 <= pgUltima %}
+        {% if currentPg+1 <= lastPg %}
         <li class="page-item"><a class="page-link"
-                                 href="/friends?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li>
+                                 href="/friends?pg={{ currentPg+1 }}">{{ currentPg+1 }}</a></li>
         {% endif %}
 
         <!-- Última -->
         <li class="page-item"><a class="page-link"
-                                 href="/friends?pg={{ pgUltima }}">Última</a></li>
+                                 href="/friends?pg={{ lastPg }}">Última</a></li>
     </ul>
 </div>
 
