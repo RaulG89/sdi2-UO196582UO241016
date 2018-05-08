@@ -7,6 +7,7 @@ module.exports = function (app, swig, gestorBD) {
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
         var usuario = {
+            nombre: req.body.nombre,
             email: req.body.email,
             password: seguro
         }
