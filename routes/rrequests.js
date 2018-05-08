@@ -71,8 +71,8 @@ module.exports = function (app, swig, gestorBD) {
                             requested: gestorBD.mongo.ObjectID(usuarios[0]._id),
                             requesting: gestorBD.mongo.ObjectID(req.params.id)
                         };
-                        gestorBD.deleteFriendRequest(requestAB, function(){
-                            gestorBD.deleteFriendRequest(requestBA, function(){
+                        gestorBD.removeFriendRequest(requestAB, function(request){
+                            gestorBD.removeFriendRequest(requestBA, function(request){
                                 res.redirect("/user/list"
                                     + "?mensaje=Amistad aceptada correctamente."
                                     + "&tipoMensaje=alert-success ");

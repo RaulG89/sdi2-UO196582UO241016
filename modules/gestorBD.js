@@ -79,7 +79,7 @@ module.exports = {
         });
     },
 
-    deleteFriendRequest : function(request, funcionCallback) {
+    removeFriendRequest : function(request, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
@@ -89,7 +89,7 @@ module.exports = {
                     if (err) {
                         funcionCallback(null);
                     } else {
-                        funcionCallback(result.ops[0]._id);
+                        funcionCallback(result);
                     }
                     db.close();
                 });
