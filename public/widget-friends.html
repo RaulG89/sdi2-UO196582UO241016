@@ -1,0 +1,62 @@
+<div id="widget-friends">
+	<input type="text" class="form-control"
+		placeholder="Filtrar por nombre" id="filtro-nombre" />
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>E-mail</th>
+			</tr>
+		</thead>
+		<tbody id="tablaCuerpo">
+
+		</tbody>
+	</table>
+</div>
+<script>
+	window.history.pushState("", "", "/cliente.html?w=friends");
+	var friends;
+	function cargarFriends() {
+		$.ajax({
+			url : URLbase + "/friends",
+			type : "GET",
+			data : {},
+			dataType : 'json',
+			headers : {
+				"token" : token
+			},
+			success : function(respuesta) {
+				friends = respuesta;
+				actualizarTabla(friends);
+			},
+			error : function(error) {
+				$("#contenedor-principal").load("widget-login.html");
+			}
+		});
+	}
+	function actualizarTabla(friendsMostrar) {
+		$("#tablaCuerpo").empty(); // Vaciar la tabla
+		for (i = 0; i < friendsMostrar.length; i++) {
+			$("#tablaCuerpo").append(
+					"<tr id="+friendsMostrar[i]._id+">" + "<td>"
+							+ friendsMostrar[i].nombre + "</td>" + "<td>"
+							+ friendsMostrar[i].email + "</td>" + "</tr>");
+			// Mucho cuidado con las comillas del eliminarCancion
+			//la id tiene que ir entre comillas ' '
+		}
+	}
+	cargarFriends();
+
+	$('#filtro-nombre').on('input', function(e) {
+		var friendsFiltrados = [];
+		var nombreFiltro = $("#filtro-nombre").val();
+
+		for (i = 0; i < friends.length; i++) {
+			if (friends[i].nombre.indexOf(nombreFiltro) != -1) {
+                friendsFiltrados.push(friends[i]);
+			}
+		}
+		actualizarTabla(friendsFiltrados);
+	});
+
+</script>

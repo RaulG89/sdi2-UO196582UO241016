@@ -6,6 +6,7 @@ module.exports = function (app, gestorBD){
             email : req.body.email,
             password : seguro
         }
+        console.log(criterio);
 
         gestorBD.obtenerUsuarios(criterio, function(usuarios) {
             if (usuarios == null || usuarios.length == 0) {
