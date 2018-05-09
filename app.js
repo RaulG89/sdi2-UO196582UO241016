@@ -2,8 +2,17 @@
 var express = require('express');
 var app = express();
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "POST, GET, DELETE, UPDATE, PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+    // Debemos especificar todas las headers que se aceptan. Content-Type , token
+    next();
+});
+
 var jwt = require('jsonwebtoken');
-app.set('jwt',jwt);
+app.set('jwt', jwt);
 
 var expressSession = require('express-session');
 app.use(expressSession({
@@ -16,23 +25,23 @@ var mongo = require('mongodb');
 var swig = require('swig');
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 var gestorBD = require("./modules/gestorBD.js");
-gestorBD.init(app,mongo);
+gestorBD.init(app, mongo);
 
 // routerUsuarioToken
 var routerUsuarioToken = express.Router();
-routerUsuarioToken.use(function(req, res, next) {
+routerUsuarioToken.use(function (req, res, next) {
     // obtener el token, puede ser un parámetro GET , POST o HEADER
     var token = req.body.token || req.query.token || req.headers['token'];
     if (token != null) {
         // verificar el token
-        jwt.verify(token, 'secreto', function(err, infoToken) {
-            if (err || (Date.now()/1000 - infoToken.tiempo) > 24000 ){
+        jwt.verify(token, 'secreto', function (err, infoToken) {
+            if (err || (Date.now() / 1000 - infoToken.tiempo) > 24000) {
                 res.status(403); // Forbidden
                 res.json({
-                    acceso : false,
+                    acceso: false,
                     error: 'Token invalido o caducado'
                 });
                 // También podríamos comprobar que intoToken.usuario existe
@@ -48,7 +57,7 @@ routerUsuarioToken.use(function(req, res, next) {
     } else {
         res.status(403); // Forbidden
         res.json({
-            acceso : false,
+            acceso: false,
             mensaje: 'No hay Token'
         });
     }
@@ -59,10 +68,10 @@ app.use('/api/cancion', routerUsuarioToken);
 app.use(express.static('public'));
 
 //Variables
-app.set('port',8081);
-app.set('db','mongodb://admin:sdi@ds245228.mlab.com:45228/tiendamusica');
-app.set('clave','abcdefg');
-app.set('crypto',crypto);
+app.set('port', 8081);
+app.set('db', 'mongodb://admin:sdi@ds245228.mlab.com:45228/tiendamusica');
+app.set('clave', 'abcdefg');
+app.set('crypto', crypto);
 
 //Routers/controllers
 require("./routes/rusers.js")(app, swig, gestorBD);
@@ -73,13 +82,13 @@ require("./routes/rapimessages.js")(app, gestorBD);
 
 // routerUserSession
 var routerUserSession = express.Router();
-routerUserSession.use(function(req, res, next) {
+routerUserSession.use(function (req, res, next) {
     console.log("routerUsuarioSession");
-    if ( req.session.usuario ) {
+    if (req.session.usuario) {
         // dejamos correr la petición
         next();
     } else {
-        console.log("va a : "+req.session.destino)
+        console.log("va a : " + req.session.destino)
         res.redirect("/signin");
     }
 });
@@ -94,6 +103,6 @@ app.get('/', function (req, res) {
 
 //Server launcher
 app.set('port', 8081);
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), function () {
     console.log("Servidor activo");
 });

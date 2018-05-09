@@ -8,18 +8,18 @@ module.exports = function (app, swig, gestorBD) {
             } else {
                 var request = {requested: gestorBD.mongo.ObjectID(usuarios[0]._id)};
                 gestorBD.obtenerPeticiones(request, function (requests) {
-                    var cosa = {};
+                    var peticiones = {};
                     var requestings = [];
                     for (peticion in requests) {
                         requestings.push(gestorBD.mongo.ObjectID(requests[peticion].requesting));
                     }
-                    cosa = {_id: {$in: requestings}};
+                    peticiones = {_id: {$in: requestings}};
 
                     var pg = parseInt(req.query.pg); // Es String !!!
                     if (req.query.pg == null) { // Puede no venir el param
                         pg = 1;
                     }
-                    gestorBD.obtenerUsuariosPg(cosa, pg, function (requestingusers, total) {
+                    gestorBD.obtenerUsuariosPg(peticiones, pg, function (requestingusers, total) {
                         var pgUltima = total / 5;
                         if (total % 5 > 0) { // Sobran decimales
                             pgUltima = pgUltima + 1;
