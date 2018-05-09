@@ -34,18 +34,27 @@
 			}
 		});
 	}
+
 	function actualizarTabla(friendsMostrar) {
 		$("#tablaCuerpo").empty(); // Vaciar la tabla
 		for (i = 0; i < friendsMostrar.length; i++) {
 			$("#tablaCuerpo").append(
 					"<tr id="+friendsMostrar[i]._id+">" + "<td>"
 							+ friendsMostrar[i].nombre + "</td>" + "<td>"
-							+ friendsMostrar[i].email + "</td>" + "</tr>");
-			// Mucho cuidado con las comillas del eliminarCancion
-			//la id tiene que ir entre comillas ' '
+							+ friendsMostrar[i].email + "</td>" + "<td>"
+							+ "<a class=\"btn btn-primary\" onclick=chat('" + friendsMostrar[i]._id + "') role=\"button\">"
+									+ "Chatear con " +friendsMostrar[i].nombre
+							+ "</a>" + "</tr>");
 		}
 	}
-	cargarFriends();
+
+    function chat(_idFriend) {
+        idSelectedFriend = _idFriend;
+        $("#contenedor-principal").load("widget-chat.html");
+    }
+
+
+    cargarFriends();
 
 	$('#filtro-nombre').on('input', function(e) {
 		var friendsFiltrados = [];

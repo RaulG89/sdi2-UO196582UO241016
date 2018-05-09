@@ -1,0 +1,32 @@
+<div id="widget-chat">
+<h2>Chat</h2>
+
+
+</div>
+<script>
+    window.history.pushState("", "", "/cliente.html?w=chat");
+
+    var messages;
+
+    function loadMessages(){
+        $.ajax({
+            url: URLbase + "/messages/" + idSelectedFriend,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (res) {
+                message = res.messages;
+                updateChat(message);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    function addMesagge(){
+
+    }
+
+</script>
