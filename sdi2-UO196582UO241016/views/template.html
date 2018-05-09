@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="author" content="Raúl Gómez Pérez and Marcos Ruíz Villamea"/>
+    <title>{% block title %} sdi2-UO196582UO241016 {% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% block scripts %} {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#myNavbar">
+                <span class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+
+            {% if usuario != null %}
+            <ul class="nav navbar-nav">
+                <li class="nav-item" class="active"><a href="/">Inicio</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="nav-item" class="active"><a href="/user/list">Usuarios</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="nav-item" class="active"><a href="/requests">Peticiones</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li class="nav-item" class="active"><a href="/friends">Amigos</a></li>
+            </ul>
+            {% endif %}
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if usuario == null %}
+                <li><a id="botonSignup" href="/signup"><span
+                        class="glyphicon glyphicon-user"></span>Regístrate</a></li>
+                <li><a id="botonLogin" href="/signin"><span
+                        class="glyphicon glyphicon-log-in"></span>Identifícate</a></li>
+                {% endif %}
+
+                {% if usuario != null %}
+                <li><a id="botonLogout" href="/logout"><span
+                        class="glyphicon glyphicon-log-out"></span>Desconectar</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<main class="container">
+    <script>
+        var mensaje = getUrlParameter('mensaje');
+        var tipoMensaje = getUrlParameter('tipoMensaje');
+        if (mensaje != "") {
+            if (tipoMensaje == "") {
+                tipoMensaje = 'alert-info';
+            }
+            $(".container").append(
+                "<div class='alert " + tipoMensaje + "'>" + mensaje
+                + " </div>");
+        }
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1]
+                .replace(/\+/g, ' '));
+        };
+    </script>
+    {% block main %} {% endblock %}
+    {% block pagination %} {% endblock %}
+</main>
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted">&copy; SDI - Social Network</span>
+    </div>
+</footer>
+</body>
+</html>
