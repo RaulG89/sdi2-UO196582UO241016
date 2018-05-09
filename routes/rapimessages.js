@@ -1,4 +1,5 @@
 module.exports = function (app, gestorBD) {
+
     app.post('/api/message', function (req, res) {
         var token = req.body.token || req.query.token || req.headers['token'];
 
@@ -35,7 +36,7 @@ module.exports = function (app, gestorBD) {
                                     date: Date.now(),
                                     read: false
                                 }
-                                gestorBD.crearMensaje(msg, function (idMsg) {
+                                gestorBD.addMessage(msg, function (idMsg) {
                                     if (idMsg == null || idMsg.length == 0) {
                                         res.status(500);
                                         res.json({error: "Error creando el mensaje."});
@@ -51,6 +52,89 @@ module.exports = function (app, gestorBD) {
                         });
                     }
                 })
+            }
+        });
+    });
+
+    app.get("/api/message/:id", function(req,res){
+        var token = req.body.token || req.query.token || req.headers['token'];
+
+        var userSession = {email: app.get('jwt').decode(token, 'secreto').usuario};
+
+        gestorBD.obtenerUsuarios(userSession, function (users) {
+            if (users == null || users.length == 0) {
+                res.status(500);
+                res.json({error: "Error al obtener mensajes."});
+            } else {
+                var counterCriterion = {
+                    "destination._id" : gestorBD.mongo.ObjectID(users[0]._id),
+                    "sender._id" : gestorBD.mongo.ObjectID(req.params.id),
+                    read : false
+                }
+
+                var criterion = {
+                    $or : [{
+                        "sender._id" : gestorBD.mongo.ObjectID(users[0]._id),
+                        "destination._id" : gestorBD.mongo.ObjectID(req.params.id)
+                    },{
+                        "destination._id" : gestorBD.mongo.ObjectID(users[0]._id),
+                        "sender._id" : gestorBD.mongo.ObjectID(req.params.id)
+                    }]
+                };
+
+                gestorBD.getMessages(criterion, counterCriterion, function(messages, count){
+                    console.log(counterCriterion);
+                    res.status(200);
+
+                    res.json({
+                        messages : messages,
+                        number : count
+                    })
+                });
+            }
+        });
+    });
+
+    app.put('/api/message/:id', function (req, res) {
+
+        var token = req.body.token || req.query.token || req.headers['token'];
+        var criterion = {
+            email: app.get('jwt').decode(token, 'secreto').usuario
+        };
+        gestorBD.obtenerUsuarios(criterion, function (users) {
+            if (users == null || users.length == 0) {
+                res.status(500);
+                res.json({
+                    error: "Error al listar las peticiones de amistad"
+                })
+            } else {
+                var messageCriterion = {
+                    $and: [{
+                               "_id": gestorBD.mongo.ObjectID(req.params.id)
+                            },
+
+                            {
+                                "destination._id": users[0]._id
+                            }]
+                };
+
+                var message = {
+                    read: true
+                };
+                gestorBD.updateMessage(messageCriterion, message, function (result) {
+                    if (result == null) {
+                        res.status(500);
+                        res.json({
+                            error: "se ha producido un error"
+                        })
+                    } else {
+                        res.status(200);
+                        res.json({
+                            message: "mensaje leido",
+                            _id: req.params.id
+                        })
+                    }
+                });
             }
         });
     });

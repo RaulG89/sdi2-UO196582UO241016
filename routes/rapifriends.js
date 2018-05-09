@@ -1,4 +1,5 @@
 module.exports = function (app, gestorBD) {
+
     app.get('/api/friends', function (req, res) {
         var token = req.body.token || req.query.token || req.headers['token'];
 

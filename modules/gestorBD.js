@@ -167,7 +167,8 @@ module.exports = {
             }
         });
     },
-    crearMensaje : function(mensaje, funcionCallback) {
+
+    addMessage : function(mensaje, funcionCallback) {
         this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
             if (err) {
                 funcionCallback(null);
@@ -178,6 +179,47 @@ module.exports = {
                         funcionCallback(null);
                     } else {
                         funcionCallback(result.ops[0]._id);
+                    }
+                    db.close();
+                });
+            }
+        });
+    },
+
+    getMessages : function(criterion, counterCriterion, funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.count(counterCriterion, function(err, count) {
+                    collection.find(criterion)
+                        .toArray(function(err, messages) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                funcionCallback(messages, count);
+                            }
+                            db.close();
+                        });
+                });
+            }
+        });
+    },
+
+    updateMessage : function(criterion, message, functionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                functionCallback(null);
+            } else {
+                var collection = db.collection('mensajes');
+                collection.update(criterion, {
+                    $set : message
+                }, function(err, result) {
+                    if (err) {
+                        functionCallback(null);
+                    } else {
+                        functionCallback(result);
                     }
                     db.close();
                 });

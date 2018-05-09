@@ -28,19 +28,7 @@ module.exports = function (app, gestorBD){
         });
     });
 
-    app.get("/api/cancion", function(req, res) {
 
-        gestorBD.obtenerCanciones( {} , function(canciones) {
-            if (canciones == null) {
-                res.status(500);
-                res.json({
-                    error : "se ha producido un error"
-                })
-            } else {
-                res.status(200);
-                res.send( JSON.stringify(canciones) );
-            }
-        });
-    });
+
 
 }
