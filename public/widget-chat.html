@@ -1,6 +1,6 @@
 <div id="widget-chat">
 <h2>Chat</h2>
-
+<div id="chat-container" style="overflow-y: scroll; width: 600px ;height: 400px"></div>
 
 </div>
 <script>
@@ -16,13 +16,23 @@
             dataType: 'json',
             headers: {"token": token},
             success: function (res) {
-                message = res.messages;
-                updateChat(message);
+                userMessages = res.messages;
+                updateChat(userMessages);
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
             }
         });
+    }
+
+    function updateChat(userMessages){
+        $("#chat-container").empty();
+
+        userMessages.forEach(function(userMessage, index){
+            var message = "";
+            if(userMessages[index].destination._id == email){}
+        });
+
     }
 
     function addMesagge(){
