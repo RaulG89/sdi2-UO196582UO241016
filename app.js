@@ -63,7 +63,7 @@ routerUsuarioToken.use(function (req, res, next) {
     }
 });
 // Aplicar routerUsuarioToken
-app.use('/api/message', routerUsuarioToken);
+app.use('/api/list', routerUsuarioToken);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
@@ -74,8 +74,8 @@ routerUsuarioSession.use(function(req, res, next) {
         next();
     } else {
         console.log("va a : "+req.session.destino)
-        res.redirect("/signin?mensaje=Intento de acceso a una zona privada sin autorizacion"
-        + "&tipoMensaje=alert-danger ");
+        res.redirect("/signin?mensaje=Intento de acceso a una zona privada"
+        + "&tipoMensaje=alert-danger");
     }
 });
 // Aplicar routerUsuarioSession
@@ -115,7 +115,7 @@ app.get('/', function (req, res) {
         usuario: req.session.usuario
     });
     res.send(respuesta);
-})
+});
 
 //Server launcher
 app.set('port', 8081);
