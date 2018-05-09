@@ -6,27 +6,32 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.post('/usuario', function (req, res) {
-        var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
-            .update(req.body.password).digest('hex');
-        var usuario = {
-            nombre: req.body.nombre,
-            email: req.body.email,
-            password: seguro
-        }
-        var criterio = {email: req.body.email};
-        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
-                gestorBD.insertarUsuario(usuario, function (id) {
-                    if (id == null) {
-                        res.redirect("/signup?mensaje=Error al registrar usuario");
-                    } else {
-                        res.redirect("/signin?mensaje=Nuevo usuario registrado");
-                    }
-                });
-            } else {
-                res.redirect("/signup?mensaje=Ya existe un usuario con este email.");
+        if (req.body.password != req.body.repassword) {
+            res.redirect("/signup?mensaje=Las contraseñas han de coincidir"
+                + "&tipoMensaje=alert-danger ");
+        } else {
+            var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
+                .update(req.body.password).digest('hex');
+            var usuario = {
+                nombre: req.body.nombre,
+                email: req.body.email,
+                password: seguro
             }
-        });
+            var criterio = {email: req.body.email};
+            gestorBD.obtenerUsuarios(criterio, function (usuarios) {
+                if (usuarios == null || usuarios.length == 0) {
+                    gestorBD.insertarUsuario(usuario, function (id) {
+                        if (id == null) {
+                            res.redirect("/signup?mensaje=Error al registrar usuario");
+                        } else {
+                            res.redirect("/signin?mensaje=Nuevo usuario registrado");
+                        }
+                    });
+                } else {
+                    res.redirect("/signup?mensaje=Ya existe un usuario con este email.");
+                }
+            });
+        }
 
     });
 

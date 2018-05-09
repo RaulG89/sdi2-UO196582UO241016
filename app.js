@@ -63,7 +63,23 @@ routerUsuarioToken.use(function (req, res, next) {
     }
 });
 // Aplicar routerUsuarioToken
-app.use('/api/cancion', routerUsuarioToken);
+app.use('/api/message', routerUsuarioToken);
+
+// routerUsuarioSession
+var routerUsuarioSession = express.Router();
+routerUsuarioSession.use(function(req, res, next) {
+    console.log("routerUsuarioSession");
+    if ( req.session.usuario ) {
+        // dejamos correr la petición
+        next();
+    } else {
+        console.log("va a : "+req.session.destino)
+        res.redirect("/signin?mensaje=Intento de acceso a una zona privada sin autorizacion"
+        + "&tipoMensaje=alert-danger ");
+    }
+});
+// Aplicar routerUsuarioSession
+app.use("/user/list",routerUsuarioSession);
 
 app.use(express.static('public'));
 
