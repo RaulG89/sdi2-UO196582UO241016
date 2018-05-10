@@ -166,7 +166,7 @@ public class SocialNetworkTests {
 	// 4.2 [BusUsrInVal] Intento de acceso con URL a la búsqueda de usuarios desde
 	// un usuario no
 	// identificado. Debe producirse un acceso no permitido a vistas privadas.
-
+	@Test
 	public void BusUsrInVal() {
 		driver.navigate().to("http://localhost:8081/user/list?busqueda=quemasda");
 		SeleniumUtils.textoPresentePagina(driver, "Intento de acceso a una zona privada sin autorizacion");
@@ -253,7 +253,7 @@ public class SocialNetworkTests {
 
 	// 8.1 [ListAmiVal] Listar los amigos de un usuario, realizar la comprobación con una lista que al menos
 	// tenga un amigo.
-	@Test
+	
 	public void ListAmiVal() {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
