@@ -93,7 +93,6 @@ app.set('crypto', crypto);
 require("./routes/rusers.js")(app, swig, gestorBD);
 require("./routes/rrequests.js")(app, swig, gestorBD);
 require("./routes/rapiusers.js")(app, gestorBD);
-require("./routes/rapifriends.js")(app, gestorBD);
 require("./routes/rapimessages.js")(app, gestorBD);
 
 // routerUserSession

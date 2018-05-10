@@ -84,7 +84,6 @@ module.exports = function (app, gestorBD) {
 
                 gestorBD.getMessages(criterion, counterCriterion, function(messages, count){
                     res.status(200);
-
                     res.json({
                         messages : messages,
                         number : count

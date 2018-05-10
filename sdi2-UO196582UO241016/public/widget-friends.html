@@ -6,6 +6,7 @@
 			<tr>
 				<th>Nombre</th>
 				<th>E-mail</th>
+				<th>Mensajes sin leer</th>
 			</tr>
 		</thead>
 		<tbody id="tablaCuerpo">
@@ -18,7 +19,7 @@
 	var friends;
 	function cargarFriends() {
 		$.ajax({
-			url : URLbase + "/friends",
+			url : URLbase + "/users",
 			type : "GET",
 			data : {},
 			dataType : 'json',
@@ -38,14 +39,7 @@
 	function actualizarTabla(friendsMostrar) {
 		$("#tablaCuerpo").empty(); // Vaciar la tabla
 		for (i = 0; i < friendsMostrar.length; i++) {
-			$("#tablaCuerpo").append(
-					"<tr id="+friendsMostrar[i]._id+">" + "<td>"
-							+ friendsMostrar[i].nombre + "</td>" + "<td>"
-							+ friendsMostrar[i].email + "</td>" + "<td>"
-							+ "<a class=\"btn btn-primary\" onclick=chat('" +  friendsMostrar[i]._id
-								+ "','" + friendsMostrar[i].email + "') role=\"button\">"
-									+ "Chatear con " +friendsMostrar[i].nombre
-							+ "</a>" + "</tr>");
+            loadTable(friendsMostrar[i]);
 		}
 	}
 
@@ -55,6 +49,31 @@
         emailSelectedFriend = email;
 
         $("#contenedor-principal").load("widget-chat.html");
+    }
+
+    function loadTable(friend){
+        $.ajax({
+            url: URLbase + "/message/" + friend._id,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (res) {
+                numberNotReadMessages = res.number;
+                $("#tablaCuerpo").append(
+                    "<tr id="+ friend._id +">" + "<td>"
+                    + friend.nombre + "</td>" + "<td>"
+                    + friend.email + "</td>" + "<td>"
+                    + numberNotReadMessages + "</td>" + "<td>"
+                    + "<a class=\"btn btn-primary\" onclick=chat('" +  friend._id
+                    + "','" + friend.email + "') role=\"button\">"
+                    + "Chatear con " + friend.nombre
+                    + "</a>" + "</tr>");
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
     }
 
 

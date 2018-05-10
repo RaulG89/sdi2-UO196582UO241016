@@ -23,7 +23,7 @@
     window.history.pushState("", "", "/cliente.html?w=login");
     $("#boton-login").click(function () {
         $.ajax({
-            url: URLbase + "/signin",
+            url: URLbase + "/users",
             type: "POST",
             data: {
                 email: $("#email").val(),
