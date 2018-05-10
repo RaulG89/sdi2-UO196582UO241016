@@ -225,5 +225,74 @@ module.exports = {
                 });
             }
         });
+    },
+
+    /*eraseDataForTest : function(functionCallback){
+        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+            if (err) {
+                functionCallback(null);
+            } else {
+                var collection = db.collection('usuarios');
+                collection.remove({}, function (err, usuarios) {
+                    if (err) {
+                        functionCallback(null);
+                    } else {
+                        collection = db.collection('friendships');
+                        collection.remove({}, function(err, peticiones){
+                            if (err) {
+                                functionCallback(null);
+                            } else {
+                                collection = db.collection('requests');
+                                collection.remove({}, function(err, amistades){
+                                    if(err) {
+                                        console.log("HOLAAAAAAAAAAAAAAA!")
+                                        functionCallback(null);
+                                    }else{
+                                        functionCallback(amistades);
+                                    }
+                                })
+                            }
+                            db.close();
+                        })
+                    }
+                    db.close();
+                })
+            }
+        });
+    }*/
+
+    eraseDataForTest : function(funcionCallback) {
+        this.mongo.MongoClient.connect(this.app.get('db'),function(err, db) {
+            if (err) {
+                funcionCallback(null);
+            } else {
+                db.collection('mensajes').drop(function(err, result) {
+                    if (err) {funcionCallback(null);
+                    } else {
+                        db.collection('requests').drop(function(err,result) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                db.collection('friendships').drop(function(err,result) {
+                                    if (err) {
+                                        funcionCallback(null);
+                                    } else {
+                                        db.collection('usuarios').drop(function(err,result) {
+                                            if (err) {
+                                                console.log("YAAAAAAAAAAAAA");
+                                                funcionCallback(null);
+                                            } else {
+                                                funcionCallback(result);
+                                            }
+                                            db.close();
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 };

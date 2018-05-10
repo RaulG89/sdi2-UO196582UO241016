@@ -223,4 +223,10 @@ module.exports = function (app, swig, gestorBD) {
         });
         res.send(respuesta);
     });
+
+    app.get("/erasedatatest", function(req, res){
+        gestorBD.eraseDataForTest(function(){
+            res.send("Test data base erased.");
+        });
+    });
 };

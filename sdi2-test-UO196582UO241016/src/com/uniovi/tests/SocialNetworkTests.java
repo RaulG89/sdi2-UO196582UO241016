@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -15,13 +16,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.uniovi.tests.pageobjects.PO_AddPublicationView;
-import com.uniovi.tests.pageobjects.PO_AdminLoginView;
-import com.uniovi.tests.pageobjects.PO_HomeView;
-import com.uniovi.tests.pageobjects.PO_JustLoggedInView;
 import com.uniovi.tests.pageobjects.PO_ListUsers;
 import com.uniovi.tests.pageobjects.PO_LoginView;
-import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_View;
 import com.uniovi.tests.util.SeleniumUtils;
@@ -51,6 +47,11 @@ public class SocialNetworkTests {
 		return driver;
 	}
 
+	@BeforeClass
+	public static void before() {
+		driver.navigate().to("http://localhost:8081/erasedatatest");
+	}
+	
 	// Antes de cada prueba se navega al URL home de la aplicaciónn
 	@Before
 	public void setUp() {
@@ -76,8 +77,33 @@ public class SocialNetworkTests {
 		// Vamos al formulario de registro
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonSignup')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario.
 		PO_RegisterView.fillForm(driver, "RegVal", "regval@gmail.com", "regval123", "regval123");
+		// Comprobamos que se ha registrado con éxito
+		SeleniumUtils.textoPresentePagina(driver, "Nuevo usuario registrado");
+	}
+	
+	@Test
+	public void PR01_RegVal2() {
+		// Vamos al formulario de registro
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonSignup')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "Yeyas", "yeyas@gmail.com", "yeyas123", "yeyas123");
+		// Comprobamos que se ha registrado con éxito
+		SeleniumUtils.textoPresentePagina(driver, "Nuevo usuario registrado");
+	}
+	
+	@Test
+	public void PR01_RegVal3() {
+		// Vamos al formulario de registro
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonSignup')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "Prueba3", "prueba3@prueba3.com", "prueba3", "prueba3");
 		// Comprobamos que se ha registrado con éxito
 		SeleniumUtils.textoPresentePagina(driver, "Nuevo usuario registrado");
 	}
@@ -89,6 +115,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de registro
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonSignup')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario.
 		PO_RegisterView.fillForm(driver, "RegInval", "reginval@gmail.com", "unpassword", "otropassword");
 		// Comprobamos que se ha registrado con éxito
@@ -101,6 +128,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
 		// COmprobamos que entramos en la pagina privada
@@ -114,6 +142,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "notexistent@gmail.com", "12345");
 		// COmprobamos que aparece el error de que las credenciales introducidas
@@ -128,6 +157,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
 		// COmprobamos que entramos en la pagina privada
@@ -153,14 +183,15 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
 		// COmprobamos que entramos en la pagina privada
 		SeleniumUtils.textoPresentePagina(driver, "Usuarios");
 		// Rellenamos el campo de busqueda
-		PO_ListUsers.fillSearchText(driver, "Publas");
+		PO_ListUsers.fillSearchText(driver, "Prueba3");
 		// Comprobamos que aparece el deseado.
-		PO_View.checkElement(driver, "text", "Publas");
+		PO_View.checkElement(driver, "text", "Prueba3");
 	}
 
 	// 4.2 [BusUsrInVal] Intento de acceso con URL a la búsqueda de usuarios desde
@@ -178,6 +209,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
 		// COmprobamos que entramos en la pagina privada
@@ -186,6 +218,7 @@ public class SocialNetworkTests {
 		SeleniumUtils.esperarSegundos(driver, 1);
 		driver.findElement(enlace).click();
 		// Comprobación
+		SeleniumUtils.esperarSegundos(driver, 2);
 		SeleniumUtils.textoPresentePagina(driver, "Petición de amistad enviada correctamente.");
 	}
 
@@ -199,6 +232,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
 		// COmprobamos que entramos en la pagina privada
@@ -207,6 +241,7 @@ public class SocialNetworkTests {
 		SeleniumUtils.esperarSegundos(driver, 1);
 		driver.findElement(enlace).click();
 		// Comprobación
+		SeleniumUtils.esperarSegundos(driver, 2);
 		SeleniumUtils.textoPresentePagina(driver, "Error al enviar petición, ya existe una petición enviada.");
 	}
 
@@ -218,6 +253,7 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "prueba3@prueba3.com", "prueba3");
 		// COmprobamos que entramos en la pagina privada
@@ -235,12 +271,14 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "prueba3@prueba3.com", "prueba3");
 		// COmprobamos que entramos en la pagina privada
 		SeleniumUtils.textoPresentePagina(driver, "Usuarios");
 		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/requests')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Comprobamos que aparecen dos botones de aceptar, por lo tanto,
 		// existen 2
 		// peticiones de amistad pendientes.
@@ -256,12 +294,14 @@ public class SocialNetworkTests {
 		// Vamos al formulario de logueo.
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario
 		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
 		// COmprobamos que entramos en la pagina privada
 		SeleniumUtils.textoPresentePagina(driver, "Usuarios");
 		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/friends')]");
 		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
 		elementos = PO_View.checkElement(driver, "free", "//td[contains(text(), 'Prueba3')]");
 		assertTrue(elementos.size() == 1);
 	}
