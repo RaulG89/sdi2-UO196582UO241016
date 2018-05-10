@@ -74,7 +74,7 @@ routerUsuarioSession.use(function(req, res, next) {
         next();
     } else {
         console.log("va a : "+req.session.destino)
-        res.redirect("/signin?mensaje=Intento de acceso a una zona privada"
+        res.redirect("/signin?mensaje=Intento de acceso a una zona privada sin autorizacion"
         + "&tipoMensaje=alert-danger");
     }
 });
