@@ -42,14 +42,18 @@
 					"<tr id="+friendsMostrar[i]._id+">" + "<td>"
 							+ friendsMostrar[i].nombre + "</td>" + "<td>"
 							+ friendsMostrar[i].email + "</td>" + "<td>"
-							+ "<a class=\"btn btn-primary\" onclick=chat('" + friendsMostrar[i]._id + "') role=\"button\">"
+							+ "<a class=\"btn btn-primary\" onclick=chat('" +  friendsMostrar[i]._id
+								+ "','" + friendsMostrar[i].email + "') role=\"button\">"
 									+ "Chatear con " +friendsMostrar[i].nombre
 							+ "</a>" + "</tr>");
 		}
 	}
 
-    function chat(_idFriend) {
+    function chat(_idFriend, email) {
+
         idSelectedFriend = _idFriend;
+        emailSelectedFriend = email;
+
         $("#contenedor-principal").load("widget-chat.html");
     }
 

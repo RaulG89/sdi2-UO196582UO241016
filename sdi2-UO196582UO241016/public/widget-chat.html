@@ -1,16 +1,19 @@
 <div id="widget-chat">
 <h2>Chat</h2>
-<div id="chat-container" style="overflow-y: scroll; width: 600px ;height: 400px"></div>
+<div id="chat-container" style="overflow-y: scroll;"></div>
 
+</div>
+<div>
+    <input id="message" class="form-control"/>
+    <button id="send" type="button" class="btn btn-success" onclick="sendMessage()">Enviar</button>
 </div>
 <script>
     window.history.pushState("", "", "/cliente.html?w=chat");
-
-    var messages;
+    loadMessages();
 
     function loadMessages(){
         $.ajax({
-            url: URLbase + "/messages/" + idSelectedFriend,
+            url: URLbase + "/message/" + idSelectedFriend,
             type: "GET",
             data: {},
             dataType: 'json',
@@ -26,17 +29,74 @@
     }
 
     function updateChat(userMessages){
+        console.log("Entramos en updateChat");
         $("#chat-container").empty();
 
         userMessages.forEach(function(userMessage, index){
+            setMessageRead(userMessage._id.toString());
             var message = "";
-            if(userMessages[index].destination._id == email){}
+            if(userMessage.sender._id == idSelectedFriend){
+                message += "<div class='message-container-left'>" +
+                    "<p class='text-left'>" + userMessage.sender.nombre + "</p>" +
+                    "<p class='text-left'>" + userMessage.text + "</p>"
+                    //+ "<span class='time-right'>" + timeStamp(new Date(userMessage.date)) + "</span>"
+                ;
+                message += "</div>";
+            }else{
+                message += "<div class='message-container-right'>" +
+                    "<p class='text-right'>" + userMessage.sender.nombre + "</p>" +
+                    "<p class='text-right'>" + userMessage.text + "</p>"
+                //+ "<span class='time-right'>" + timeStamp(new Date(userMessage.date)) + "</span>"
+                ;
+                if (userMessage.read) {
+                    message += "<p class='text-right' style=\"color: #00d200;\">✔</p>";
+                }
+                message += "</div>";
+            }
+
+            $("#chat-container").append(message);
         });
 
     }
 
-    function addMesagge(){
+    function sendMessage(){
+        $.ajax({
+            url: URLbase + "/message",
+            type: "POST",
+            data: {
+                destination: idSelectedFriend,
+                text: $("#message").val()
+            },
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (res) {
+                $("#contenedor-principal").load("widget-chat.html");
 
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
     }
+
+    function setMessageRead(idMessage) {
+        $.ajax({
+            url: URLbase + "/message/" + idMessage,
+            type: "PUT",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (res) {
+                mensajes = res;
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    setInterval(function () {
+        loadMessages();
+    }, 2000);
 
 </script>
