@@ -279,9 +279,7 @@ public class SocialNetworkTests {
 		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/requests')]");
 		elementos.get(0).click();
 		SeleniumUtils.esperarSegundos(driver, 2);
-		// Comprobamos que aparecen dos botones de aceptar, por lo tanto,
-		// existen 2
-		// peticiones de amistad pendientes.
+		//Aceptamos la invitación
 		elementos = PO_View.checkElement(driver, "free", "//td/following-sibling::*[1]");
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
