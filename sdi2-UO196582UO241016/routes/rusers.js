@@ -186,8 +186,9 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/erasedatatest", function(req, res){
-        gestorBD.eraseDataForTest(function(){
-            res.send("Test data base erased.");
+        console.log("RUSERS PASA");
+        gestorBD.eraseDataForTest(function(result){
+            res.send("Test data base erased." + result);
         });
     });
 };

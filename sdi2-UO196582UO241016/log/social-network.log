@@ -17,3 +17,37 @@
 [2018-05-11T13:26:08.811] [INFO] sdi2 - Usuario null ha cerrado sesión.
 [2018-05-11T13:26:55.098] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
 [2018-05-11T13:26:57.396] [INFO] sdi2 - Usuario null ha cerrado sesión.
+[2018-05-11T19:41:53.886] [WARN] sdi2 - Ya existe un usuario con email regval@gmail.com
+[2018-05-11T19:41:57.788] [WARN] sdi2 - Ya existe un usuario con email yeyas@gmail.com
+[2018-05-11T19:42:01.435] [WARN] sdi2 - Ya existe un usuario con email prueba3@prueba3.com
+[2018-05-11T19:42:08.348] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:42:15.400] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:42:19.560] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:42:24.676] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:42:27.498] [INFO] sdi2 - Usuario yeyas@gmail.com ha enviado una petición de amistad
+[2018-05-11T19:42:33.175] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:42:35.386] [WARN] sdi2 - Error al enviar petición de amistad por yeyas@gmail.com, ya existe una petición enviada
+[2018-05-11T19:42:41.123] [INFO] sdi2 - Usuario identificado prueba3@prueba3.com
+[2018-05-11T19:42:46.108] [INFO] sdi2 - Usuario identificado prueba3@prueba3.com
+[2018-05-11T19:42:53.996] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:44:14.172] [INFO] sdi2 - Usuario registrado regval@gmail.com
+[2018-05-11T19:44:18.399] [INFO] sdi2 - Usuario registrado yeyas@gmail.com
+[2018-05-11T19:44:22.380] [INFO] sdi2 - Usuario registrado prueba3@prueba3.com
+[2018-05-11T19:44:29.145] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:44:36.240] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:44:40.350] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:44:45.495] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:44:48.318] [INFO] sdi2 - Usuario yeyas@gmail.com ha enviado una petición de amistad
+[2018-05-11T19:44:54.109] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:44:56.309] [WARN] sdi2 - Error al enviar petición de amistad por yeyas@gmail.com, ya existe una petición enviada
+[2018-05-11T19:45:02.125] [INFO] sdi2 - Usuario identificado prueba3@prueba3.com
+[2018-05-11T19:45:07.062] [INFO] sdi2 - Usuario identificado prueba3@prueba3.com
+[2018-05-11T19:45:16.223] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:45:57.303] [WARN] sdi2 - Ya existe un usuario con email regval@gmail.com
+[2018-05-11T19:46:01.144] [WARN] sdi2 - Ya existe un usuario con email yeyas@gmail.com
+[2018-05-11T19:46:04.929] [WARN] sdi2 - Ya existe un usuario con email prueba3@prueba3.com
+[2018-05-11T19:46:11.449] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:46:18.546] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:46:22.451] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:46:27.417] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-11T19:46:30.145] [INFO] sdi2 - Usuario yeyas@gmail.com ha enviado una petición de amistad
