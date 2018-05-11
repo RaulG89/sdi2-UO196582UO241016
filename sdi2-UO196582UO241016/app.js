@@ -70,7 +70,12 @@ routerUsuarioToken.use(function (req, res, next) {
     }
 });
 // Aplicar routerUsuarioToken
-app.use('/api/list', routerUsuarioToken);
+app.use('/api/users', routerUsuarioToken);
+app.use('/api/message', routerUsuarioToken);
+app.use('/api/message/:id', routerUsuarioToken);
+app.use('/cliente.html?w=friends', routerUsuarioToken);
+app.use('/cliente.html?w=chat', routerUsuarioToken);
+
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
@@ -87,6 +92,10 @@ routerUsuarioSession.use(function(req, res, next) {
 });
 // Aplicar routerUsuarioSession
 app.use("/user/list",routerUsuarioSession);
+app.use("/friends",routerUsuarioSession);
+app.use("/requests",routerUsuarioSession);
+app.use("/requests/accept/:id",routerUsuarioSession);
+app.use("/friendrequest/:id",routerUsuarioSession);
 
 app.use(express.static('public'));
 

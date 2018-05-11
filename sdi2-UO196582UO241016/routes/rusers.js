@@ -114,60 +114,7 @@ module.exports = function (app, swig, gestorBD) {
         });
     });
 
-    app.get('/friendrequest/:id', function (req, res) {
-        var criterio = {email: req.session.usuario};
-        gestorBD.obtenerUsuarios(criterio, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
-                app.get("logger").warn("Error al enviar petición de amistad por "
-                    + req.session.usuario);
-                res.redirect("/user/list"
-                    + "?mensaje=Error al enviar petición"
-                    + "&tipoMensaje=alert-danger ");
-            } else {
-                var request = {
-                    requested: gestorBD.mongo.ObjectID(req.params.id),
-                    requesting: gestorBD.mongo.ObjectID(usuarios[0]._id)
-                }
-                gestorBD.obtenerPeticiones(request, function (requests) {
-                    if (requests.length != 0) {
-                        app.get("logger").warn("Error al enviar petición de amistad por "
-                            + req.session.usuario + ", ya existe una petición enviada");
-                        res.redirect("/user/list"
-                            + "?mensaje=Error al enviar petición, ya existe una petición enviada."
-                            + "&tipoMensaje=alert-danger ");
-                    } else {
-                        var friendship = {
-                            requested: gestorBD.mongo.ObjectID(req.params.id),
-                            requesting: usuarios[0]._id
-                        }
-                        gestorBD.obtenerAmistades(friendship, function (friendships) {
-                            if (friendships.length != 0) {
-                                app.get("logger").warn("Error al enviar petición de amistad por "
-                                    + req.session.usuario + ", ya existe una amistad con este usuario");
-                                res.redirect("/user/list"
-                                    + "?mensaje=Error al enviar petición, ya existe una amistad con este usuario"
-                                    + "&tipoMensaje=alert-danger ");
-                            } else {
-                                gestorBD.addFriendRequest(request, function (idRequest) {
-                                    if (idRequest == null) {
-                                        res.send(respuesta);
-                                    } else {
-                                        app.get("logger").info("Usuario " + req.session.usuario
-                                            + " ha enviado una petición de amistad");
-                                        res.redirect("/user/list"
-                                            + "?mensaje=Petición de amistad enviada correctamente."
-                                            + "&tipoMensaje=alert-success ");
-                                    }
-                                });
-                            }
-                        })
-                    }
-                    ;
-                });
 
-            }
-        })
-    });
 
     /*
     * Route that list all friends of the user in session.
@@ -232,16 +179,16 @@ module.exports = function (app, swig, gestorBD) {
     });
 
     app.get("/logout", function (req, res) {
-        var respuesta = swig.renderFile('views/index.html', {
-            usuario: null
-        });
+        var respuesta = swig.renderFile('views/index.html');
+        req.session.usuario = null;
         app.get("logger").info("Usuario " + req.session.usuario + " ha cerrado sesión.");
         res.send(respuesta);
     });
 
     app.get("/erasedatatest", function(req, res){
-        gestorBD.eraseDataForTest(function(){
-            res.send("Test data base erased.");
+        console.log("RUSERS PASA");
+        gestorBD.eraseDataForTest(function(result){
+            res.send("Test data base erased." + result);
         });
     });
 };
