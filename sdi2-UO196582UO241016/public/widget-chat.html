@@ -39,14 +39,12 @@
                 message += "<div class='message-container-left'>" +
                     "<p class='text-left'>" + userMessage.sender.nombre + "</p>" +
                     "<p class='text-left'>" + userMessage.text + "</p>"
-                    //+ "<span class='time-right'>" + timeStamp(new Date(userMessage.date)) + "</span>"
                 ;
                 message += "</div>";
             }else{
                 message += "<div class='message-container-right'>" +
                     "<p class='text-right'>" + userMessage.sender.nombre + "</p>" +
                     "<p class='text-right'>" + userMessage.text + "</p>"
-                //+ "<span class='time-right'>" + timeStamp(new Date(userMessage.date)) + "</span>"
                 ;
                 if (userMessage.read) {
                     message += "<p class='text-right' style=\"color: #00d200;\">✔</p>";

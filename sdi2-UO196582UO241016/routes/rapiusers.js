@@ -10,6 +10,8 @@ module.exports = function (app, gestorBD){
 
         gestorBD.obtenerUsuarios(criterio, function(usuarios) {
             if (usuarios == null || usuarios.length == 0) {
+                app.get("logger").warn("La autenticación no se ha completado con éxito por"
+                    + req.body.email);
                 res.status(401); // Unauthorized
                 res.json({
                     autenticado : false,
@@ -19,6 +21,8 @@ module.exports = function (app, gestorBD){
                 var token = app.get('jwt').sign(
                     {usuario: criterio.email , tiempo: Date.now()/1000},
                     "secreto");
+                app.get("logger").info("La autenticación se ha completado con éxito por "
+                    + req.body.email);
                 res.status(200);
                 res.json({
                     autenticado : true,
@@ -36,6 +40,8 @@ module.exports = function (app, gestorBD){
 
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
+                app.get("logger").warn("Error al obtener las amistades desde '/api/users' por "
+                    + criterio.email);
                 res.status(500);
                 res.json({error: "Error al obtener las amistades."});
             } else {
@@ -56,6 +62,8 @@ module.exports = function (app, gestorBD){
                     };
                     gestorBD.obtenerUsuarios(friend, function (
                         friends) {
+                        app.get("logger").info("Amistades listadas con éxito desde '/api/users' por "
+                            + req.body.email);
                         res.status(200);
                         res.send(JSON.stringify(friends));
                     });

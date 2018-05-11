@@ -4,6 +4,7 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {email: req.session.usuario};
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
+                app.get("logger").warn("Error obteniendo peticiones para " + req.session.usuario);
                 res.send("Error obteniendo peticiones.");
             } else {
                 var request = {requested: gestorBD.mongo.ObjectID(usuarios[0]._id)};
@@ -31,6 +32,8 @@ module.exports = function (app, swig, gestorBD) {
                             pgUltima: pgUltima,
                             usuario: req.session.usuario
                         });
+                        app.get("logger").info("Listando peticiones de amistad corréctamente para "
+                            + req.session.usuario);
                         res.send(respuesta);
                     })
                 })
@@ -42,6 +45,8 @@ module.exports = function (app, swig, gestorBD) {
         var criterion = {email: req.session.usuario};
         gestorBD.obtenerUsuarios(criterion, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
+                app.get("logger").warn("Error al aceptar petición para " + req.session.usuario
+                    + ". Variable usuarios nula.");
                 res.redirect("/user/list"
                     + "?mensaje=Error al aceptar petición"
                     + "&tipoMensaje=alert-danger ");
@@ -59,6 +64,7 @@ module.exports = function (app, swig, gestorBD) {
                 friendships.push(friendship2);
                 gestorBD.addFriendship(friendships, function (idFriendship) {
                     if (idFriendship == null) {
+                        app.get("logger").warn("Error al añadir amistad para " + req.session.usuario);
                         res.redirect("/user/list"
                             + "?mensaje=Error al aceptar petición"
                             + "&tipoMensaje=alert-danger ");
@@ -73,6 +79,8 @@ module.exports = function (app, swig, gestorBD) {
                         };
                         gestorBD.removeFriendRequest(requestAB, function(request){
                             gestorBD.removeFriendRequest(requestBA, function(request){
+                                app.get("logger").info("Amistad aceptada por el usuario "
+                                    + req.session.usuario);
                                 res.redirect("/user/list"
                                     + "?mensaje=Amistad aceptada correctamente."
                                     + "&tipoMensaje=alert-success ");
