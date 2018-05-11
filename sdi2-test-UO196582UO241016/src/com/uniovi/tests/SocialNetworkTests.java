@@ -28,13 +28,13 @@ public class SocialNetworkTests {
 
 	// En Windows (Debe ser la versión 46.0 y desactivar las actualizacioens
 	// automáticas)):
-	// static String PathFirefox =
-	// "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win"
-	// + "\\Firefox46.win\\FirefoxPortable.exe";
+	 static String PathFirefox =
+	 "E:\\Clase\\UNIOVI\\5_Quinto_Curso\\SDI\\PL_SDI_5\\Firefox46.0.win"
+	 + "\\Firefox46.win\\FirefoxPortable.exe";
 	// static String PathFirefox =
 	// "C:\\Users\\UO241016\\Downloads\\PL_SDI_5\\PL_SDI_5\\Firefox46.0.win"
 	// + "\\Firefox46.win\\FirefoxPortable.exe";
-	static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
+	//static String PathFirefox = "C:\\Users\\Marcos\\Downloads\\Firefox46.win\\FirefoxPortable.exe";
 
 	// Común a Windows y a MACOSX
 	static WebDriver driver = getDriver(PathFirefox);
@@ -49,7 +49,7 @@ public class SocialNetworkTests {
 
 	@BeforeClass
 	public static void before() {
-		driver.navigate().to("http://localhost:8081/erasedatatest");
+		//driver.navigate().to("http://localhost:8081/erasedatatest");
 	}
 	
 	// Antes de cada prueba se navega al URL home de la aplicaciónn
@@ -104,6 +104,18 @@ public class SocialNetworkTests {
 		SeleniumUtils.esperarSegundos(driver, 2);
 		// Rellenamos el formulario.
 		PO_RegisterView.fillForm(driver, "Prueba3", "prueba3@prueba3.com", "prueba3", "prueba3");
+		// Comprobamos que se ha registrado con éxito
+		SeleniumUtils.textoPresentePagina(driver, "Nuevo usuario registrado");
+	}
+	
+	@Test
+	public void PR01_RegVal4() {
+		// Vamos al formulario de registro
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonSignup')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Rellenamos el formulario.
+		PO_RegisterView.fillForm(driver, "Prueba4", "prueba4@prueba4.com", "prueba4", "prueba4");
 		// Comprobamos que se ha registrado con éxito
 		SeleniumUtils.textoPresentePagina(driver, "Nuevo usuario registrado");
 	}
@@ -307,41 +319,210 @@ public class SocialNetworkTests {
 	}
 
 	// C1.1[[CInVal] Inicio de sesión con datos válidos
-
-	public void CInVal() {
-		
+	@Test
+	public void PR14_CInVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
+		// Comprobamos que entramos en la pagina privada
+		SeleniumUtils.esperarSegundos(driver, 3);
+		//SeleniumUtils.textoPresentePagina(driver, "Amigos");
+		PO_View.checkElement(driver, "text", "Amigos");
 	}
 
 	// C1.2 [CInInVal] Inicio de sesión con datos inválidos (usuario no existente en la aplicación).
-
-	public void CInInVal() {
-		
+	@Test
+	public void PR15_CInInVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+		PO_LoginView.fillForm(driver, "notexistent@gmail.com", "12345");
+		// Comprobamos que aparece el error de que las credenciales introducidas
+		// son
+		// inválidas.
+		SeleniumUtils.textoPresentePagina(driver, "Usuario no encontrado");
 	}
 
 	// C.2.1 [CListAmiVal] Acceder a la lista de amigos de un usuario, que al menos tenga tres amigos.
-
-	public void CListAmiVal() {
+	@Test
+	public void PR16_CListAmiVal() {
+		//Enviamos invitaciones a los demás usuarios
+		
+		// Vamos al formulario de logueo.
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
+		// COmprobamos que entramos en la pagina privada
+		SeleniumUtils.textoPresentePagina(driver, "Usuarios");
+		By enlace = By.xpath("//td[contains(text(), 'Prueba4')]/following-sibling::*[2]");
+		SeleniumUtils.esperarSegundos(driver, 1);
+		driver.findElement(enlace).click();
+		SeleniumUtils.esperarSegundos(driver, 1);
+		enlace = By.xpath("//td[contains(text(), 'RegVal')]/following-sibling::*[2]");
+		SeleniumUtils.esperarSegundos(driver, 1);
+		driver.findElement(enlace).click();
+		// Comprobación
+		SeleniumUtils.esperarSegundos(driver, 2);
+		SeleniumUtils.textoPresentePagina(driver, "Petición de amistad enviada correctamente.");
+		
+		//Deslogueamos del sistema
+		driver.navigate().to("http://localhost:8081/logout");
+		
+		//Accedemos con el usuario Prueba4
+		
+		// Vamos al formulario de logueo.
+		elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "prueba4@prueba4.com", "prueba4");
+		SeleniumUtils.textoPresentePagina(driver, "Usuarios");
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/requests')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Comprobamos que aparece un boton de aceptar
+		// peticiones de amistad pendientes.
+		elementos = PO_View.checkElement(driver, "free", "//td/following-sibling::*[1]");
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+		
+		//Deslogueamos del sistema
+		driver.navigate().to("http://localhost:8081/logout");
+		
+		//Accedemos con el usuario RegVal
+		
+		// Vamos al formulario de logueo.
+		elementos = PO_View.checkElement(driver, "free", "//li/a[contains(@id, 'botonLogin')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "regval@gmail.com", "regval123");
+		SeleniumUtils.textoPresentePagina(driver, "Usuarios");
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href,'/requests')]");
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		// Comprobamos que aparece un boton de aceptar
+		// peticiones de amistad pendientes.
+		elementos = PO_View.checkElement(driver, "free", "//td/following-sibling::*[1]");
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+		
+		//Deslogueamos del sistema
+		driver.navigate().to("http://localhost:8081/logout");
+		
+		//Accedemos con el usuario Yeyas y comprobamos
+		
+		driver.navigate().to("http://localhost:8081/cliente.html");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
+		// Comprobamos que entramos en la pagina privada
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
+		//Comprobamos que estan los tres amigos
+		PO_View.checkElement(driver, "text", "Prueba3");
+		PO_View.checkElement(driver, "text", "Prueba4");
+		PO_View.checkElement(driver, "text", "RegVal");
 		
 	}
 
 	// C.2.2 [CListAmiFil] Acceder a la lista de amigos de un usuario, y realizar un filtrado para encontrar a un
 	// amigo concreto, el nombre a buscar debe coincidir con el de un amigo
-
-	public void CListAmiFil() {
-		
+	@Test
+	public void PR17_CListAmiFil() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
+		// Comprobamos que entramos en la pagina privada
+		SeleniumUtils.esperarSegundos(driver, 3);
+		WebElement searchText = driver.findElement(By.name("busqueda"));
+		searchText.click();
+		searchText.clear();
+		searchText.sendKeys("Prueba3");
+		SeleniumUtils.esperarSegundos(driver, 3);
+		// Comprobamos que aparece el deseado.
+		PO_View.checkElement(driver, "text", "Prueba3");
 	}
 
 	// C3.1 [CListMenVal] Acceder a la lista de mensajes de un amigo “chat”, la lista debe contener al menos
 	// tres mensajes.
-
-	public void CListMenVal() {
+	@Test
+	public void PR18_CListMenVal() {
+		//Accedemos al cliente
+		driver.navigate().to("http://localhost:8081/cliente.html");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "prueba4@prueba4.com", "prueba4");
+		//Accedemos al chat
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//td/a");
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+		//Escribimos los tres mensajes
+		SeleniumUtils.esperarSegundos(driver, 1);
+		WebElement message = driver.findElement(By.id("message"));
+		message.click();
+		message.clear();
+		message.sendKeys("Hola");
+		SeleniumUtils.esperarSegundos(driver, 2);
+		message = driver.findElement(By.id("send"));
+		message.click();
+		message = driver.findElement(By.id("message"));
+		message.click();
+		message.clear();
+		message.sendKeys("Que");
+		SeleniumUtils.esperarSegundos(driver, 2);
+		message = driver.findElement(By.id("send"));
+		message.click();
+		message = driver.findElement(By.id("message"));
+		message.click();
+		message.clear();
+		message.sendKeys("tal?");
+		SeleniumUtils.esperarSegundos(driver, 2);
+		message = driver.findElement(By.id("send"));
+		message.click();
 		
+		//Nos logueamos con el otro usuario
+		driver.navigate().to("http://localhost:8081/cliente.html?w=login");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "yeyas@gmail.com", "yeyas123");
+		//Accedemos al chat con Prueba4
+		SeleniumUtils.esperarSegundos(driver, 3);
+		elementos = PO_View.checkElement(driver, "free", "//tr[contains(@id, 'Prueba4')]/td[4]/a");
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+		//Comprobamos que los mensajes que obtiene son 3
+		SeleniumUtils.esperarSegundos(driver, 3);
+		elementos = PO_View.checkElement(driver, "free", "//div[contains(@class, 'message-container-left')]");
+		assertTrue(elementos.size() == 3);
 	}
 
 	// C4.1 [CCrearMenVal] Acceder a la lista de mensajes de un amigo “chat” y crear un nuevo mensaje,
 	// validar que el mensaje aparece en la lista de mensajes.
-
-	public void CCrearMenVal() {
+	@Test
+	public void PR19_CCrearMenVal() {
+		//Accedemos al cliente
+		driver.navigate().to("http://localhost:8081/cliente.html");
+		// Rellenamos el formulario
+		SeleniumUtils.esperarSegundos(driver, 1);
+		PO_LoginView.fillForm(driver, "prueba3@prueba3.com", "prueba3");
+		//Accedemos al chat
+		SeleniumUtils.esperarSegundos(driver, 1);
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//td/a");
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+		SeleniumUtils.esperarSegundos(driver, 2);
+		//Escribimos los tres mensajes
+		WebElement message = driver.findElement(By.id("message"));
+		message.click();
+		message.clear();
+		message.sendKeys("Hola");		
+		message = driver.findElement(By.id("send"));
+		message.click();
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
+		//Comprobamso que el mensaje se encuentra en el chat
+		elementos = PO_View.checkElement(driver, "free", "//div[contains(@class, 'message-container-right')]");
+		assertTrue(elementos.size() == 1);
+		SeleniumUtils.esperarSegundos(driver, 1);
+		PO_View.checkElement(driver, "text", "Hola");
 		
 	}
 
