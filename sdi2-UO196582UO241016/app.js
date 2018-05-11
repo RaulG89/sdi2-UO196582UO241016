@@ -11,6 +11,13 @@ app.use(function (req, res, next) {
     next();
 });
 
+log4js = require('log4js');
+log4js.configure({
+    appenders: { sdi2: { type: 'file', filename: 'log/social-network.log' } },
+    categories: { default: { appenders: ['sdi2'], level: 'trace' } }
+});
+var logger = log4js.getLogger('sdi2');
+
 var jwt = require('jsonwebtoken');
 app.set('jwt', jwt);
 
@@ -88,6 +95,7 @@ app.set('port', 8081);
 app.set('db', 'mongodb://admin:sdi@ds245228.mlab.com:45228/tiendamusica');
 app.set('clave', 'abcdefg');
 app.set('crypto', crypto);
+app.set('logger', logger);
 
 //Routers/controllers
 require("./routes/rusers.js")(app, swig, gestorBD);
@@ -117,7 +125,6 @@ app.get('/', function (req, res) {
 });
 
 //Server launcher
-app.set('port', 8081);
 app.listen(app.get('port'), function () {
     console.log("Servidor activo");
 });

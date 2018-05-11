@@ -22,12 +22,15 @@ module.exports = function (app, swig, gestorBD) {
                 if (usuarios == null || usuarios.length == 0) {
                     gestorBD.insertarUsuario(usuario, function (id) {
                         if (id == null) {
+                            app.get("logger").warn("Error al registrar usuario " + usuario.email);
                             res.redirect("/signup?mensaje=Error al registrar usuario");
                         } else {
+                            app.get("logger").info("Usuario registrado " + usuario.email);
                             res.redirect("/signin?mensaje=Nuevo usuario registrado");
                         }
                     });
                 } else {
+                    app.get("logger").warn("Ya existe un usuario con email " + usuario.email);
                     res.redirect("/signup?mensaje=Ya existe un usuario con este email.");
                 }
             });
@@ -55,6 +58,7 @@ module.exports = function (app, swig, gestorBD) {
                     + "&tipoMensaje=alert-danger ");
             } else {
                 req.session.usuario = usuarios[0].email;
+                app.get("logger").info("Usuario identificado " + usuarios[0].email);
                 res.redirect("/user/list");
             }
         });
@@ -90,6 +94,7 @@ module.exports = function (app, swig, gestorBD) {
         gestorBD.obtenerUsuariosPg(criterio, pg, function (usuarios, total) {
             if (usuarios == null) {
                 res.send("Error al listar ");
+                app.get("logger").warn("Error al listar usuarios para " + req.session.usuario);
             } else {
 
                 var pgUltima = total / 5;
@@ -113,6 +118,8 @@ module.exports = function (app, swig, gestorBD) {
         var criterio = {email: req.session.usuario};
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
+                app.get("logger").warn("Error al enviar petición de amistad por "
+                    + req.session.usuario);
                 res.redirect("/user/list"
                     + "?mensaje=Error al enviar petición"
                     + "&tipoMensaje=alert-danger ");
@@ -123,6 +130,8 @@ module.exports = function (app, swig, gestorBD) {
                 }
                 gestorBD.obtenerPeticiones(request, function (requests) {
                     if (requests.length != 0) {
+                        app.get("logger").warn("Error al enviar petición de amistad por "
+                            + req.session.usuario + ", ya existe una petición enviada");
                         res.redirect("/user/list"
                             + "?mensaje=Error al enviar petición, ya existe una petición enviada."
                             + "&tipoMensaje=alert-danger ");
@@ -133,6 +142,8 @@ module.exports = function (app, swig, gestorBD) {
                         }
                         gestorBD.obtenerAmistades(friendship, function (friendships) {
                             if (friendships.length != 0) {
+                                app.get("logger").warn("Error al enviar petición de amistad por "
+                                    + req.session.usuario + ", ya existe una amistad con este usuario");
                                 res.redirect("/user/list"
                                     + "?mensaje=Error al enviar petición, ya existe una amistad con este usuario"
                                     + "&tipoMensaje=alert-danger ");
@@ -141,6 +152,8 @@ module.exports = function (app, swig, gestorBD) {
                                     if (idRequest == null) {
                                         res.send(respuesta);
                                     } else {
+                                        app.get("logger").info("Usuario " + req.session.usuario
+                                            + " ha enviado una petición de amistad");
                                         res.redirect("/user/list"
                                             + "?mensaje=Petición de amistad enviada correctamente."
                                             + "&tipoMensaje=alert-success ");
@@ -212,6 +225,7 @@ module.exports = function (app, swig, gestorBD) {
                     });
                 });
             } else {
+                app.get("logger").warn("Error al listar amigos por " + req.session.usuario);
                 res.send("Error al listar amigos.");
             }
         });
@@ -221,6 +235,7 @@ module.exports = function (app, swig, gestorBD) {
         var respuesta = swig.renderFile('views/index.html', {
             usuario: null
         });
+        app.get("logger").info("Usuario " + req.session.usuario + " ha cerrado sesión.");
         res.send(respuesta);
     });
 
