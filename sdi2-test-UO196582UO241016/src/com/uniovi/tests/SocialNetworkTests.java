@@ -49,7 +49,7 @@ public class SocialNetworkTests {
 
 	@BeforeClass
 	public static void before() {
-		//driver.navigate().to("http://localhost:8081/erasedatatest");
+		driver.navigate().to("http://localhost:8081/erasedatatest");
 	}
 	
 	// Antes de cada prueba se navega al URL home de la aplicaciónn
@@ -461,21 +461,18 @@ public class SocialNetworkTests {
 		message.click();
 		message.clear();
 		message.sendKeys("Hola");
-		SeleniumUtils.esperarSegundos(driver, 2);
 		message = driver.findElement(By.id("send"));
 		message.click();
 		message = driver.findElement(By.id("message"));
 		message.click();
 		message.clear();
 		message.sendKeys("Que");
-		SeleniumUtils.esperarSegundos(driver, 2);
 		message = driver.findElement(By.id("send"));
 		message.click();
 		message = driver.findElement(By.id("message"));
 		message.click();
 		message.clear();
-		message.sendKeys("tal?");
-		SeleniumUtils.esperarSegundos(driver, 2);
+		message.sendKeys("Tal?");
 		message = driver.findElement(By.id("send"));
 		message.click();
 		
