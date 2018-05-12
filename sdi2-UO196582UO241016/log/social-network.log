@@ -263,3 +263,42 @@
 [2018-05-12T00:29:56.256] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por prueba3@prueba3.com.
 [2018-05-12T00:29:57.906] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por prueba3@prueba3.com.
 [2018-05-12T00:29:58.252] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por prueba3@prueba3.com.
+[2018-05-12T00:40:42.810] [INFO] sdi2 - Amistades listadas con éxito desde '/api/users' por undefined
+[2018-05-12T00:40:43.422] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T00:40:43.430] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T00:40:43.432] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T00:41:34.153] [INFO] sdi2 - Usuario registrado peter@languila.es
+[2018-05-12T00:41:45.627] [INFO] sdi2 - Usuario identificado peter@languila.es
+[2018-05-12T00:42:02.438] [INFO] sdi2 - Usuario peter@languila.es ha enviado una petición de amistad
+[2018-05-12T00:42:12.270] [WARN] sdi2 - Error al enviar petición de amistad por peter@languila.es, ya existe una petición enviada
+[2018-05-12T00:42:18.235] [INFO] sdi2 - Usuario peter@languila.es ha enviado una petición de amistad
+[2018-05-12T00:42:22.537] [INFO] sdi2 - Usuario peter@languila.es ha enviado una petición de amistad
+[2018-05-12T00:42:35.271] [INFO] sdi2 - Usuario null ha cerrado sesión.
+[2018-05-12T00:42:38.890] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-12T00:42:41.776] [INFO] sdi2 - Listando peticiones de amistad corréctamente para yeyas@gmail.com
+[2018-05-12T00:42:45.841] [INFO] sdi2 - Amistad aceptada por el usuario yeyas@gmail.com
+[2018-05-12T00:42:48.640] [INFO] sdi2 - Listando peticiones de amistad corréctamente para yeyas@gmail.com
+[2018-05-12T00:43:26.672] [INFO] sdi2 - Usuario null ha cerrado sesión.
+[2018-05-12T00:43:41.800] [INFO] sdi2 - Usuario identificado prueba4@prueba4.com
+[2018-05-12T00:43:47.040] [INFO] sdi2 - Listando peticiones de amistad corréctamente para prueba4@prueba4.com
+[2018-05-12T00:43:50.448] [INFO] sdi2 - Amistad aceptada por el usuario prueba4@prueba4.com
+[2018-05-12T00:43:55.990] [INFO] sdi2 - Listando peticiones de amistad corréctamente para prueba4@prueba4.com
+[2018-05-12T00:44:19.857] [INFO] sdi2 - Listando peticiones de amistad corréctamente para prueba4@prueba4.com
+[2018-05-12T00:44:24.212] [INFO] sdi2 - Usuario null ha cerrado sesión.
+[2018-05-12T00:46:35.800] [WARN] sdi2 - Ya existe un usuario con email peter@languila.es
+[2018-05-12T00:47:03.717] [INFO] sdi2 - Usuario identificado yeyas@gmail.com
+[2018-05-12T00:47:06.374] [INFO] sdi2 - Usuario null ha cerrado sesión.
+[2018-05-12T01:40:04.377] [INFO] sdi2 - Amistades listadas con éxito desde '/api/users' por undefined
+[2018-05-12T01:40:04.626] [INFO] sdi2 - La autenticación se ha completado con éxito por yeyas@gmail.com
+[2018-05-12T01:40:04.988] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:04.989] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:05.047] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:05.094] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:05.446] [INFO] sdi2 - Amistades listadas con éxito desde '/api/users' por undefined
+[2018-05-12T01:40:06.025] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:06.027] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:06.070] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T01:40:06.071] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por yeyas@gmail.com.
+[2018-05-12T02:58:39.571] [INFO] sdi2 - La autenticación se ha completado con éxito por prueba3@prueba3.com
+[2018-05-12T02:58:40.384] [INFO] sdi2 - Amistades listadas con éxito desde '/api/users' por undefined
+[2018-05-12T02:58:40.955] [INFO] sdi2 - Mensajes obtenidos correctamente desde '/api/message' por prueba3@prueba3.com.
